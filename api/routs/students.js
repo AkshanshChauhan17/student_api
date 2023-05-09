@@ -28,14 +28,14 @@ router.get("/:roll_number", (req, res, next) => {
         .catch(err => console.log(err));
 });
 
-router.post("/", (req, res, next) => {
+router.post("/signup", (req, res, next) => {
     studentsModule.find({ roll_number: req.body.roll_number })
         .exec()
         .then(data => {
             console.log(data)
             if (data != "") {
                 res.status(500).json({
-                    message: "Roll Number Already Existed!!!",
+                    message: "Roll Number Already Registered!!!",
                     already_exist_data: data
                 });
             } else {
@@ -60,6 +60,30 @@ router.post("/", (req, res, next) => {
             }
         })
 });
+
+router.post("/login", (req, res, next) => {
+    studentsModule.find({
+            name: req.body.name,
+            roll_number: req.body.roll_number
+        })
+        .exec()
+        .then(data => {
+            if (data != "") {
+                res.status(200).json({
+                    message: "LOGIN SUCCESSFULLY",
+                    token: data[0]._id
+                })
+            } else {
+                res.status(200).json({
+                    message: "LOGIN FAILED",
+                    token: null
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
 
 router.delete("/:id", (req, res, next) => {
     const id = req.params.id;

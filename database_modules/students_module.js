@@ -7,6 +7,7 @@ const studentsSchema = mongoose.Schema({
     stream: String,
     semester: Number,
     mobile_number: Number,
+    login_token: String,
     registration_date: Number
 });
 
