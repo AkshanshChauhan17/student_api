@@ -5,6 +5,7 @@ const { default: mongoose } = require("mongoose");
 
 router.get("/all", (req, res, next) => {
     studentsModule.find()
+        .sort({ roll_number: 1 })
         .exec()
         .then(data => {
             res.status(200).json({
