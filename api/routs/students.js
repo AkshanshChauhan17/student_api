@@ -28,6 +28,19 @@ router.get("/:roll_number", (req, res, next) => {
         .catch(err => console.log(err));
 });
 
+router.get("/login/:id", (req, res, next) => {
+    const id = req.params.id;
+    studentsModule.find({ _id: id })
+        .exec()
+        .then(data => {
+            res.status(200).json({
+                message: "Student Data of ID: " + id,
+                data: data
+            })
+        })
+        .catch(err => console.log(err));
+});
+
 router.post("/signup", (req, res, next) => {
     studentsModule.find({ roll_number: req.body.roll_number })
         .exec()
