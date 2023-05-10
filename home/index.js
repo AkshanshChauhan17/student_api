@@ -5,13 +5,23 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if (res.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'POST, PATCH, DELETE, PUT, GET');
+        return res.status(200).json({});
+    }
+    next();
+});
+
 mongoose.connect("mongodb+srv://" + process.env.USER_NAME + ":" + process.env.USER_PASS + "@cluster1.bh9tqaj.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 app.use("/students", students);
 
