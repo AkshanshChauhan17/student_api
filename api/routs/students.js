@@ -111,13 +111,25 @@ router.delete("/:id", (req, res, next) => {
         .catch(err => console.log(err));
 });
 
-router.patch("/:roll_number", (req, res, next) => {
+router.patch("/cse/6/:subject/:roll_number/:date/:attend", (req, res, next) => {
     const roll_number = req.params.roll_number;
-    studentsModule.updateOne({ roll_number: roll_number })
+    const date = req.params.date;
+    const attend = req.params.attend;
+    const subject = req.params.subject;
+    studentsModule.updateOne({ roll_number: roll_number }, {
+            $push: {
+                attendance: {
+                    date: date,
+                    subject: subject,
+                    attend: attend
+                }
+            }
+        })
         .exec()
         .then(data => {
             res.status(200).json({
-                message: data.name + "Attendance is POSTED Successfully"
+                message: "Attendance is POSTED Successfully",
+                data: data
             })
         })
         .catch(err => console.log(err));
