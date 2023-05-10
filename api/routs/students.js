@@ -111,4 +111,16 @@ router.delete("/:id", (req, res, next) => {
         .catch(err => console.log(err));
 });
 
+router.patch("/:roll_number", (req, res, next) => {
+    const roll_number = req.params.roll_number;
+    studentsModule.updateOne({ roll_number: roll_number })
+        .exec()
+        .then(data => {
+            res.status(200).json({
+                message: data.name + "Attendance is POSTED Successfully"
+            })
+        })
+        .catch(err => console.log(err));
+});
+
 module.exports = router;
